@@ -27,13 +27,6 @@ func init() {
 
 func main() {
 	flag.Parse()
-	hostname, _ := os.Hostname()
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		_, err := fmt.Fprintf(w, "Hello from %s\nPowered by Simple HTTP Server\n", hostname)
-		if err != nil {
-			fmt.Println(err)
-		}
-	})
 
 	if len(ports) == 0 {
 		ports = append(ports, "80")
@@ -47,8 +40,18 @@ func main() {
 }
 
 func startServer(port string) {
+	hostname, _ := os.Hostname()
+
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		_, err := fmt.Fprintf(w, "Hello from %s:%s\nPowered by Simple HTTP Server\n", hostname, port)
+		if err != nil {
+			fmt.Println(err)
+		}
+	})
+
 	fmt.Printf("Starting server at port %s\n", port)
-	if err := http.ListenAndServe(":"+port, nil); err != nil {
+	if err := http.ListenAndServe(":"+port, mux); err != nil {
 		log.Fatal(err)
 	}
 }
