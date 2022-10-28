@@ -6,7 +6,7 @@ LABEL author="joengjyu@gmail.com"
 WORKDIR /app
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
-     && apk add --no-cache bash bash-doc bash-completion curl net-tools iputils iproute2 netcat-openbsd busybox-extras traceroute tcpdump bind-tools
+     && apk add --no-cache bash bash-doc bash-completion curl wget net-tools iputils iproute2 netcat-openbsd busybox-extras tcpdump lsblk bind-tools
 
 COPY ./bin/simple-http-server /app
 
